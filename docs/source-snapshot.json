@@ -1,0 +1,90 @@
+{
+  "baseline_date": "2026-10-11",
+  "scope": "documentation source traceability; not an executable release manifest",
+  "sources": [
+    {
+      "file": "main.py",
+      "sha256": "004d5ee38a207564ac39589d6289fbcd91dea759df09602b13f072bcf516b98e"
+    },
+    {
+      "file": "GUI.py",
+      "sha256": "f357eec4f8ab8537ba16d86ff3addb4c7d27b3ce49604ec5390e81bc89a6d862"
+    },
+    {
+      "file": "FaceDrawingApp.py",
+      "sha256": "eb35ba1798bd45173f294b1bdd2c24f7bd1da649ef75d17a9dda6cc0981b0f9f"
+    },
+    {
+      "file": "picture_frontend.py",
+      "sha256": "176fd06308a170f395ce39e35315b784d00110b444e92799536d734583d80bf1"
+    },
+    {
+      "file": "AiRepaint.py",
+      "sha256": "86782d8db99b28184e7e7ae7be0ca4ff51a8f3b8eff765e419717b48b54674ec"
+    },
+    {
+      "file": "BinaryLocalEditorDialog.py",
+      "sha256": "217767a0e0fca46911051587240aae9b357d8427fafe410db50b74deb8deebc2"
+    },
+    {
+      "file": "PathEditorDialog.py",
+      "sha256": "1d6a3ab5f8d8e873a500081766fb68a6500008eb3a6880e5608af69b856b4c4e"
+    },
+    {
+      "file": "robot_path/drawing_pipeline.py",
+      "sha256": "2887dadc216da180b4a502c71c83fb3e880d63baef0b97015acafe3d97747b3d"
+    },
+    {
+      "file": "robot_path/binary_editor.py",
+      "sha256": "fa3356ce6e16bc2ba45d0f384624190a56d3ed1df71d40d115e6b131cbdec2d2"
+    },
+    {
+      "file": "robot_path/centerline_planner.py",
+      "sha256": "711064519d8b4ca08124e83aab52c989511244c8e0cc727db619ce6ad2424e0b"
+    },
+    {
+      "file": "robot_path/initial_path_fit.py",
+      "sha256": "6c515f8ee42054eab158b0128bb48ba5ce59a162bea881df821d0db30a399b03"
+    },
+    {
+      "file": "robot_path/bspline_geometry.py",
+      "sha256": "8f4272c00c257dc1dd63ef910050468c6c78f602f9a5ccf811a906606709216c"
+    },
+    {
+      "file": "robot_path/editable_paths.py",
+      "sha256": "713e39ae2e60c41951d0b942efb17ae43f06f099c06c25e33b3296696562dec4"
+    },
+    {
+      "file": "robot_path/fill_geometry.py",
+      "sha256": "a9a5742a447c8fdc288ce06c3e085e2869e476d582c924f40e3e2d9e2df90cfa"
+    },
+    {
+      "file": "robot_path/fill_route.py",
+      "sha256": "e5bad81ce64d72731d6f5cb2a599538f4292acb29afb2c1467a7ba3663ead5cf"
+    },
+    {
+      "file": "robot_path/canvas_geometry.py",
+      "sha256": "7bfedaeab0d7cfa49c7cfad26632f5cf3c10f6678e02f62c0e2e3ef9b4db4e93"
+    },
+    {
+      "file": "robot_path/abb_legacy_client.py",
+      "sha256": "07a46c689420bbfa0b57349afb01bafd5cd96903e42b5c5cb883dbd4d1f82186"
+    },
+    {
+      "file": "skills/portrait-structure/rules.txt",
+      "sha256": "f4f72b4cec4477ebd9134d7f48c448413a2877749a26aad7ac9eba169c6f084f"
+    },
+    {
+      "file": "frontend/index.html",
+      "sha256": "235bc06b63d51d9c765ca77bfe11a7945fbf6daa59b0bb7bacf74b6345483bed"
+    },
+    {
+      "file": "frontend/app.js",
+      "sha256": "e0db361747d4acb2e842d9c70eb5efbdaf6c106d3c4595fb149817e8483dcf0f"
+    },
+    {
+      "file": "frontend/style.css",
+      "sha256": "835e83bcb041121b3468e573cbaa52cab67b1f3a1e462f2b571c8d481319c671"
+    }
+  ]
+}

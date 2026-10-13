@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1170 890" role="img"><style>svg text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;background:#fff;border:1px solid #d8e2e8;border-radius:12px}.canvas{min-width:0;background:#fff;border:1px solid #d8e2e8;border-radius:12px;overflow:hidden;position:relative}.canvas-footer{padding:10px 14px;border-top:1px solid #d8e2e8;color:#586c78;font-size:12px}.actions{display:flex;flex-wrap:wrap;gap:6px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}.card{background:#fff;border:1px solid #d8e2e8;border-radius:12px;padding:18px}.canvas-footer{display:none}.c-mask{fill:#fff;stroke:none}.c-frontend{fill:#edf7fc;stroke:#2386b1}.c-backend{fill:#eaf6f0;stroke:#38896c}.c-cloud{fill:#f3edfa;stroke:#8760b0}.c-messagebus{fill:#fff4e6;stroke:#b88132}.c-external{fill:#f0f3f5;stroke:#728795}.c-region{fill:#fafbfc;stroke:#d9e1e6}.t-primary{fill:#152a35}.t-muted{fill:#586c78}.t-frontend{fill:#2386b1}.t-backend{fill:#38896c}.t-cloud{fill:#8760b0}.t-messagebus{fill:#b88132}.t-external{fill:#728795}.a-default{stroke:#586c78}.a-emphasis{stroke:#087f72}.a-dashed{stroke:#8760b0;stroke-dasharray:6 4}.a-security{stroke:#b88132}.m{fill:#586c78}.m-emphasis{fill:#087f72}.m-dashed{fill:#8760b0}.m-security{fill:#b88132}.cards{grid-template-columns:1fr}.canvas{border:0}.cards{break-inside:avoid}</style><rect width="100%" height="100%" class="c-mask"/><defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m"/></marker><marker id="arrowhead-emphasis" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-emphasis"/></marker><marker id="arrowhead-dashed" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-dashed"/></marker><marker id="arrowhead-security" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-security"/></marker></defs>
+<rect x="20" y="25" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="73" class="t-primary" font-size="13" text-anchor="start" font-weight="600">图片准备</text>
+<text x="35" y="95" class="t-primary" font-size="13" text-anchor="start" font-weight="600">与确认</text>
+<rect x="20" y="183" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="231" class="t-primary" font-size="13" text-anchor="start" font-weight="600">可选 skill</text>
+<rect x="20" y="341" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="389" class="t-primary" font-size="13" text-anchor="start" font-weight="600">本地图像处理</text>
+<rect x="20" y="499" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="547" class="t-primary" font-size="13" text-anchor="start" font-weight="600">路径拟合</text>
+<text x="35" y="569" class="t-primary" font-size="13" text-anchor="start" font-weight="600">与编辑</text>
+<rect x="20" y="657" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="705" class="t-primary" font-size="13" text-anchor="start" font-weight="600">计划与</text>
+<text x="35" y="727" class="t-primary" font-size="13" text-anchor="start" font-weight="600">ABB 执行</text>
+<g data-edge="prepare-input" tabindex="0" role="button" aria-label="prepare-input"><path d="M295,88 L345,88" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="confirm-current" tabindex="0" role="button" aria-label="confirm-current"><path d="M495,88 L545,88" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="choose-skill" tabindex="0" role="button" aria-label="choose-skill"><path d="M620,126 L620,208" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="skill-enabled" tabindex="0" role="button" aria-label="勾选"><path d="M695,246 L745,246" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="720.0" y="234" class="t-muted" font-size="12" text-anchor="middle">勾选</text>
+</g>
+<g data-edge="skill-disabled" tabindex="0" role="button" aria-label="未勾选：当前图"><path d="M620,284 L620,404 L745,404" class="a-dashed" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-dashed)"/>
+<text x="660" y="391" class="t-muted" font-size="12" text-anchor="middle">未勾选：当前图</text>
+</g>
+<g data-edge="structured-source" tabindex="0" role="button" aria-label="结构图"><path d="M820,284 L820,366" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="865" y="325.0" class="t-muted" font-size="12" text-anchor="middle">结构图</text>
+</g>
+<g data-edge="extract-geometry" tabindex="0" role="button" aria-label="extract-geometry"><path d="M895,404 L945,404" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="fit-curves" tabindex="0" role="button" aria-label="fit-curves"><path d="M1020,442 L1020,524" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="edit-paths" tabindex="0" role="button" aria-label="edit-paths"><path d="M945,562 L895,562" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="fill-outline" tabindex="0" role="button" aria-label="fill-outline"><path d="M745,562 L695,562" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="validate-plan" tabindex="0" role="button" aria-label="validate-plan"><path d="M620,600 L620,682" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="send-plan" tabindex="0" role="button" aria-label="send-plan"><path d="M695,720 L745,720" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="confirm-execution" tabindex="0" role="button" aria-label="confirm-execution"><path d="M895,720 L945,720" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-node="input" tabindex="0" role="button" aria-label="导入 / 拍照">
+<rect x="145" y="50" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="145" y="50" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="220.0" y="78" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">导入 / 拍照</text>
+<text x="220.0" y="99" class="t-muted" font-size="11" text-anchor="middle">取得输入图片</text>
+</g>
+<g data-node="prepare-image" tabindex="0" role="button" aria-label="图片准备">
+<rect x="345" y="50" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="345" y="50" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="420.0" y="78" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">图片准备</text>
+<text x="420.0" y="99" class="t-muted" font-size="11" text-anchor="middle">可选 API 改图 / 抠图</text>
+</g>
+<g data-node="confirm" tabindex="0" role="button" aria-label="确认与裁剪">
+<rect x="545" y="50" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="50" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="620.0" y="78" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">确认与裁剪</text>
+<text x="620.0" y="99" class="t-muted" font-size="11" text-anchor="middle">交接当前图片</text>
+</g>
+<g data-node="skill-gate" tabindex="0" role="button" aria-label="skill 开关">
+<rect x="545" y="208" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="208" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="620.0" y="236" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">skill 开关</text>
+<text x="620.0" y="257" class="t-muted" font-size="11" text-anchor="middle">用户选择处理方式</text>
+</g>
+<g data-node="structure-api" tabindex="0" role="button" aria-label="API 整理结构">
+<rect x="745" y="208" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="208" width="150" height="76" rx="8" class="c-cloud" stroke-width="1.5"/>
+<text x="820.0" y="236" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">API 整理结构</text>
+<text x="820.0" y="257" class="t-muted" font-size="11" text-anchor="middle">skill 规则 / 输出对齐</text>
+</g>
+<g data-node="binarize" tabindex="0" role="button" aria-label="二值化微调">
+<rect x="745" y="366" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="366" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="820.0" y="394" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">二值化微调</text>
+<text x="820.0" y="415" class="t-muted" font-size="11" text-anchor="middle">全图参数 / 自由圈选</text>
+</g>
+<g data-node="extract" tabindex="0" role="button" aria-label="线条与黑块">
+<rect x="945" y="366" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="945" y="366" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="1020.0" y="394" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">线条与黑块</text>
+<text x="1020.0" y="415" class="t-muted" font-size="11" text-anchor="middle">中心线 / 区域轮廓</text>
+</g>
+<g data-node="fit" tabindex="0" role="button" aria-label="B-spline 拟合">
+<rect x="945" y="524" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="945" y="524" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="1020.0" y="552" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">B-spline 拟合</text>
+<text x="1020.0" y="573" class="t-muted" font-size="11" text-anchor="middle">误差检查 / 分段恢复</text>
+</g>
+<g data-node="edit" tabindex="0" role="button" aria-label="路径编辑">
+<rect x="745" y="524" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="524" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="820.0" y="552" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">路径编辑</text>
+<text x="820.0" y="573" class="t-muted" font-size="11" text-anchor="middle">调整控制点与节点</text>
+</g>
+<g data-node="fill" tabindex="0" role="button" aria-label="轮廓填充">
+<rect x="545" y="524" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="524" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="620.0" y="552" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">轮廓填充</text>
+<text x="620.0" y="573" class="t-muted" font-size="11" text-anchor="middle">当前轮廓 / 填充排序</text>
+</g>
+<g data-node="validate" tabindex="0" role="button" aria-label="严格检查">
+<rect x="545" y="682" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="682" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="620.0" y="710" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">严格检查</text>
+<text x="620.0" y="731" class="t-muted" font-size="11" text-anchor="middle">纸面范围 / 几何采样</text>
+</g>
+<g data-node="send" tabindex="0" role="button" aria-label="自适应发送">
+<rect x="745" y="682" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="682" width="150" height="76" rx="8" class="c-messagebus" stroke-width="1.5"/>
+<text x="820.0" y="710" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">自适应发送</text>
+<text x="820.0" y="731" class="t-muted" font-size="11" text-anchor="middle">按可用缓冲容量选择</text>
+</g>
+<g data-node="completed" tabindex="0" role="button" aria-label="ABB 执行确认">
+<rect x="945" y="682" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="945" y="682" width="150" height="76" rx="8" class="c-external" stroke-width="1.5"/>
+<text x="1020.0" y="710" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">ABB 执行确认</text>
+<text x="1020.0" y="731" class="t-muted" font-size="11" text-anchor="middle">Stamp / 空闲状态</text>
+</g>
+<rect x="95" y="847" width="18" height="12" rx="8" class="c-frontend" stroke-width="1.5"/>
+<rect x="245" y="847" width="18" height="12" rx="8" class="c-backend" stroke-width="1.5"/>
+<rect x="395" y="847" width="18" height="12" rx="8" class="c-cloud" stroke-width="1.5"/>
+<rect x="545" y="847" width="18" height="12" rx="8" class="c-messagebus" stroke-width="1.5"/>
+<rect x="745" y="847" width="18" height="12" rx="8" class="c-external" stroke-width="1.5"/>
+<text x="30" y="858" class="t-primary" font-size="12" text-anchor="start" font-weight="600">图例</text>
+<text x="121" y="858" class="t-muted" font-size="11" text-anchor="start">交互入口</text>
+<text x="271" y="858" class="t-muted" font-size="11" text-anchor="start">本地计算</text>
+<text x="421" y="858" class="t-muted" font-size="11" text-anchor="start">API</text>
+<text x="571" y="858" class="t-muted" font-size="11" text-anchor="start">通信与队列</text>
+<text x="771" y="858" class="t-muted" font-size="11" text-anchor="start">实际执行</text></svg>

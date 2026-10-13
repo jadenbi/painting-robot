@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 980" role="img"><style>svg text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;background:#fff;border:1px solid #d8e2e8;border-radius:12px}.canvas{min-width:0;background:#fff;border:1px solid #d8e2e8;border-radius:12px;overflow:hidden;position:relative}.canvas-footer{padding:10px 14px;border-top:1px solid #d8e2e8;color:#586c78;font-size:12px}.actions{display:flex;flex-wrap:wrap;gap:6px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}.card{background:#fff;border:1px solid #d8e2e8;border-radius:12px;padding:18px}.canvas-footer{display:none}.c-mask{fill:#fff;stroke:none}.c-frontend{fill:#edf7fc;stroke:#2386b1}.c-backend{fill:#eaf6f0;stroke:#38896c}.c-cloud{fill:#f3edfa;stroke:#8760b0}.c-messagebus{fill:#fff4e6;stroke:#b88132}.c-external{fill:#f0f3f5;stroke:#728795}.c-region{fill:#fafbfc;stroke:#d9e1e6}.t-primary{fill:#152a35}.t-muted{fill:#586c78}.t-frontend{fill:#2386b1}.t-backend{fill:#38896c}.t-cloud{fill:#8760b0}.t-messagebus{fill:#b88132}.t-external{fill:#728795}.a-default{stroke:#586c78}.a-emphasis{stroke:#087f72}.a-dashed{stroke:#8760b0;stroke-dasharray:6 4}.a-security{stroke:#b88132}.m{fill:#586c78}.m-emphasis{fill:#087f72}.m-dashed{fill:#8760b0}.m-security{fill:#b88132}.cards{grid-template-columns:1fr}.canvas{border:0}.cards{break-inside:avoid}</style><rect width="100%" height="100%" class="c-mask"/><defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m"/></marker><marker id="arrowhead-emphasis" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-emphasis"/></marker><marker id="arrowhead-dashed" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-dashed"/></marker><marker id="arrowhead-security" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-security"/></marker></defs>
+<rect x="35" y="160" width="1210" height="75" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="52" y="171" class="t-primary" font-size="13" text-anchor="start" font-weight="600">准备：检查空闲并建立完成基线</text>
+<rect x="35" y="245" width="1210" height="265" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="52" y="256" class="t-primary" font-size="13" text-anchor="start" font-weight="600">策略 A：任务在配置容量内，边收边画</text>
+<rect x="35" y="530" width="1210" height="375" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="52" y="541" class="t-primary" font-size="13" text-anchor="start" font-weight="600">策略 B：任务超过配置容量，逐批确认</text>
+<path d="M220,110 L220,150 M220,190 L220,230 M220,275 L220,505 M220,560 L220,900" class="a-default" stroke-width="1" stroke-dasharray="6 6" fill="none"/>
+<path d="M640,110 L640,150 M640,190 L640,230 M640,275 L640,505 M640,560 L640,900" class="a-default" stroke-width="1" stroke-dasharray="6 6" fill="none"/>
+<path d="M1060,110 L1060,150 M1060,190 L1060,230 M1060,275 L1060,505 M1060,560 L1060,900" class="a-default" stroke-width="1" stroke-dasharray="6 6" fill="none"/>
+<g data-edge="initial-state" tabindex="0" role="button" aria-label="查空闲 / 清队列 / 读 Stamp"><path d="M220,190 L640,190" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="430.0" y="178" class="t-muted" font-size="12" text-anchor="middle">查空闲 / 清队列 / 读 Stamp</text>
+</g>
+<g data-edge="small-upload" tabindex="0" role="button" aria-label="连续 CMD，保留中途 START"><path d="M220,290 L640,290" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="430.0" y="278" class="t-muted" font-size="12" text-anchor="middle">连续 CMD，保留中途 START</text>
+</g>
+<g data-edge="small-start" tabindex="0" role="button" aria-label="入队执行，边接收边绘制"><path d="M640,330 L1060,330" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="850.0" y="318" class="t-muted" font-size="12" text-anchor="middle">入队执行，边接收边绘制</text>
+</g>
+<g data-edge="small-last" tabindex="0" role="button" aria-label="余下数据 / MSG_LAST"><path d="M220,385 L640,385" class="a-default" stroke-width="1.7" fill="none" marker-end="url(#arrowhead)"/>
+<text x="430.0" y="373" class="t-muted" font-size="12" text-anchor="middle">余下数据 / MSG_LAST</text>
+</g>
+<g data-edge="small-fence" tabindex="0" role="button" aria-label="执行批尾，Stamp +1"><path d="M1060,440 L640,440" class="a-default" stroke-width="1.7" fill="none" marker-end="url(#arrowhead)"/>
+<text x="850.0" y="428" class="t-muted" font-size="12" text-anchor="middle">执行批尾，Stamp +1</text>
+</g>
+<g data-edge="small-confirm" tabindex="0" role="button" aria-label="查询结果：Stamp +1 且空闲"><path d="M640,490 L220,490" class="a-default" stroke-width="1.7" fill="none" marker-end="url(#arrowhead)"/>
+<text x="430.0" y="478" class="t-muted" font-size="12" text-anchor="middle">查询结果：Stamp +1 且空闲</text>
+</g>
+<g data-edge="large-upload" tabindex="0" role="button" aria-label="完整路径批次 / 标记 / START"><path d="M220,575 L640,575" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="430.0" y="563" class="t-muted" font-size="12" text-anchor="middle">完整路径批次 / 标记 / START</text>
+</g>
+<g data-edge="large-run" tabindex="0" role="button" aria-label="取队列执行本批"><path d="M640,615 L1060,615" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="850.0" y="603" class="t-muted" font-size="12" text-anchor="middle">取队列执行本批</text>
+</g>
+<g data-edge="large-fence" tabindex="0" role="button" aria-label="到位后 Stamp +1"><path d="M1060,670 L640,670" class="a-default" stroke-width="1.7" fill="none" marker-end="url(#arrowhead)"/>
+<text x="850.0" y="658" class="t-muted" font-size="12" text-anchor="middle">到位后 Stamp +1</text>
+</g>
+<g data-edge="large-query" tabindex="0" role="button" aria-label="查询 Stamp 与运动状态"><path d="M220,725 L640,725" class="a-default" stroke-width="1.7" fill="none" marker-end="url(#arrowhead)"/>
+<text x="430.0" y="713" class="t-muted" font-size="12" text-anchor="middle">查询 Stamp 与运动状态</text>
+</g>
+<g data-edge="large-confirm" tabindex="0" role="button" aria-label="期望 Stamp +1 且空闲"><path d="M640,780 L220,780" class="a-default" stroke-width="1.7" fill="none" marker-end="url(#arrowhead)"/>
+<text x="430.0" y="768" class="t-muted" font-size="12" text-anchor="middle">期望 Stamp +1 且空闲</text>
+</g>
+<g data-edge="next-batch" tabindex="0" role="button" aria-label="确认后发送下一批"><path d="M220,850 L640,850" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="430.0" y="838" class="t-muted" font-size="12" text-anchor="middle">确认后发送下一批</text>
+</g>
+<g data-node="pc" tabindex="0" role="button" aria-label="Python 客户端">
+<rect x="100" y="32" width="240" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="100" y="32" width="240" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="220.0" y="60" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">Python 客户端</text>
+<text x="220.0" y="81" class="t-muted" font-size="11" text-anchor="middle">计划 / 发送策略</text>
+</g>
+<g data-node="network" tabindex="0" role="button" aria-label="RAPID 网络任务">
+<rect x="520" y="32" width="240" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="520" y="32" width="240" height="76" rx="8" class="c-messagebus" stroke-width="1.5"/>
+<text x="640.0" y="60" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">RAPID 网络任务</text>
+<text x="640.0" y="81" class="t-muted" font-size="11" text-anchor="middle">接收 / 共享队列</text>
+</g>
+<g data-node="motion" tabindex="0" role="button" aria-label="RAPID 运动任务">
+<rect x="940" y="32" width="240" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="940" y="32" width="240" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="1060.0" y="60" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">RAPID 运动任务</text>
+<text x="1060.0" y="81" class="t-muted" font-size="11" text-anchor="middle">执行 / 完成标记</text>
+</g>
+<text x="45" y="944" class="t-primary" font-size="13" text-anchor="start" font-weight="600">包 ACK / MSG_LAST ≠ 物理运动完成；确认失败时停止续发。</text></svg>

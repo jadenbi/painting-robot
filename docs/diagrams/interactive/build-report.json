@@ -1,0 +1,31 @@
+{
+  "implementation": "xiaohua local interactive diagrams",
+  "automated_checks": [
+    {
+      "diagram": "architecture",
+      "nodes": 10,
+      "edges": 10,
+      "scenes": 3,
+      "geometry": "node overlap and finite geometry checks passed",
+      "source_svg_identity": "passed"
+    },
+    {
+      "diagram": "workflow",
+      "nodes": 13,
+      "edges": 13,
+      "scenes": 2,
+      "geometry": "node overlap and finite geometry checks passed",
+      "source_svg_identity": "passed"
+    },
+    {
+      "diagram": "communication",
+      "nodes": 3,
+      "edges": 12,
+      "scenes": 2,
+      "geometry": "node overlap and finite geometry checks passed",
+      "source_svg_identity": "passed"
+    }
+  ],
+  "browser_interaction": "not tested; restricted tool environment",
+  "archify_official_finalize": "not used"
+}

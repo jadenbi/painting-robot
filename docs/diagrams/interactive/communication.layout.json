@@ -1,0 +1,205 @@
+{
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ABB 通信 · 容量自适应发送",
+    "locale": "zh-CN",
+    "output": "communication.html",
+    "viewBox": [
+      1280,
+      940
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "pc",
+      "type": "backend",
+      "label": "Python 客户端",
+      "sublabel": "计划 / 发送策略"
+    },
+    {
+      "id": "network",
+      "type": "messagebus",
+      "label": "RAPID 网络任务",
+      "sublabel": "接收 / 共享队列"
+    },
+    {
+      "id": "motion",
+      "type": "backend",
+      "label": "RAPID 运动任务",
+      "sublabel": "执行 / 完成标记"
+    }
+  ],
+  "segments": [
+    {
+      "from": 165,
+      "to": 230,
+      "label": "准备：检查空闲并建立完成基线"
+    },
+    {
+      "from": 250,
+      "to": 505,
+      "label": "策略 A：任务在配置容量内，边收边画"
+    },
+    {
+      "from": 535,
+      "to": 900,
+      "label": "策略 B：任务超过配置容量，逐批确认"
+    }
+  ],
+  "messages": [
+    {
+      "id": "initial-state",
+      "from": "pc",
+      "to": "network",
+      "y": 190,
+      "label": "查空闲 / 清队列 / 读 Stamp",
+      "variant": "emphasis"
+    },
+    {
+      "id": "small-upload",
+      "from": "pc",
+      "to": "network",
+      "y": 275,
+      "label": "连续 CMD，保留中途 START",
+      "variant": "emphasis"
+    },
+    {
+      "id": "small-start",
+      "from": "network",
+      "to": "motion",
+      "y": 330,
+      "label": "入队执行，边接收边绘制",
+      "variant": "emphasis"
+    },
+    {
+      "id": "small-last",
+      "from": "pc",
+      "to": "network",
+      "y": 385,
+      "label": "余下数据 / MSG_LAST",
+      "variant": "default"
+    },
+    {
+      "id": "small-fence",
+      "from": "motion",
+      "to": "network",
+      "y": 440,
+      "label": "执行批尾，Stamp +1",
+      "variant": "return"
+    },
+    {
+      "id": "small-confirm",
+      "from": "network",
+      "to": "pc",
+      "y": 490,
+      "label": "查询结果：Stamp +1 且空闲",
+      "variant": "return"
+    },
+    {
+      "id": "large-upload",
+      "from": "pc",
+      "to": "network",
+      "y": 560,
+      "label": "完整路径批次 / 标记 / START",
+      "variant": "emphasis"
+    },
+    {
+      "id": "large-run",
+      "from": "network",
+      "to": "motion",
+      "y": 615,
+      "label": "取队列执行本批",
+      "variant": "emphasis"
+    },
+    {
+      "id": "large-fence",
+      "from": "motion",
+      "to": "network",
+      "y": 670,
+      "label": "到位后 Stamp +1",
+      "variant": "return"
+    },
+    {
+      "id": "large-query",
+      "from": "pc",
+      "to": "network",
+      "y": 725,
+      "label": "查询 Stamp 与运动状态",
+      "variant": "default"
+    },
+    {
+      "id": "large-confirm",
+      "from": "network",
+      "to": "pc",
+      "y": 780,
+      "label": "期望 Stamp +1 且空闲",
+      "variant": "return"
+    },
+    {
+      "id": "next-batch",
+      "from": "pc",
+      "to": "network",
+      "y": 850,
+      "label": "确认后发送下一批",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "容量由配置决定",
+      "items": [
+        "可用容量来自 RAPID 数组与队列实现。",
+        "任务计数包括排队辅助动作；START 不占队列。",
+        "调整容量时同步两端定义与安全检查。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "接收与完成不同",
+      "items": [
+        "包 ACK 或 MSG_LAST 不代表物理绘图完成。",
+        "批尾标记由运动任务执行，到位后递增。",
+        "结合 Stamp 与空闲状态后，才确认本批完成。"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "异常与等待",
+      "items": [
+        "异常或未确认时停止续发，不重发整批坐标。",
+        "小任务暂时空队列时可只发 START 唤醒余下任务。",
+        "大任务可能有批间等待，未实现滑动窗口续发。"
+      ]
+    }
+  ],
+  "format": "xiaohua-diagram-v1",
+  "scenes": [
+    {
+      "id": "small",
+      "label": "容量内：边接收边绘画",
+      "edges": [
+        "initial-state",
+        "small-upload",
+        "small-start",
+        "small-last",
+        "small-fence",
+        "small-confirm"
+      ]
+    },
+    {
+      "id": "large",
+      "label": "超过容量：分批执行与确认",
+      "edges": [
+        "initial-state",
+        "large-upload",
+        "large-run",
+        "large-fence",
+        "large-query",
+        "large-confirm",
+        "next-batch"
+      ]
+    }
+  ]
+}

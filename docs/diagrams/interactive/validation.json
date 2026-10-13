@@ -1,0 +1,37 @@
+{
+  "implementation": "Project-local viewer inspired by Archify 3.x; no 2.0 template dependency",
+  "official_archify_finalize": "not used",
+  "offline_graph_and_mock_dom_assertions": 119,
+  "static_visual_review": "all three PNGs reviewed",
+  "browser_interaction": "not tested; local HTML previews blocked by environment policy",
+  "application_code": "unchanged",
+  "artifacts": [
+    {
+      "diagram": "architecture",
+      "files": {
+        "docs/diagrams/interactive/architecture.html": "7b94fd7486151493905f827b86a90b403375723464c334f8ce0cdc129cc79fc2",
+        "docs/diagrams/interactive/architecture.layout.json": "19ad4d365d9fd766120d2d7ddb305d9c12b8294f89cee17880c2fb7dfad6bcd8",
+        "docs/images/architecture.svg": "934717d065e667d2030f8b2dc71014875866d1c21d2e5445be9dd5f54464896c",
+        "docs/images/architecture.png": "1ab881ef45f44888bfa845d2374a9e3c8714f85f2a7b7500723a63b0e9e946a5"
+      }
+    },
+    {
+      "diagram": "workflow",
+      "files": {
+        "docs/diagrams/interactive/workflow.html": "ac8586e77df79b3a2ee0ccde3f2a10ff60693533b161e9336eb5609cf7777bb7",
+        "docs/diagrams/interactive/workflow.layout.json": "c444d87801199a905736948f933e34d3b85e994fe2cad38f34769e7977c36ff2",
+        "docs/images/workflow.svg": "23d530a07cf2b6c4dad06113da4162a046e67fbcf2fbb932bd867d1e32659141",
+        "docs/images/workflow.png": "2942db06a1a1014f4328c082c97ac58fdc98124d047e331849369b983be1a183"
+      }
+    },
+    {
+      "diagram": "communication",
+      "files": {
+        "docs/diagrams/interactive/communication.html": "71c56488516b57aea92d77c64ecec086f6cd0e4a0300af82f465f2f79e52fe1b",
+        "docs/diagrams/interactive/communication.layout.json": "bbe1f925035e84f95ecf670930bf4cf09c1b6bb775bae2c82ce5c781f75e1780",
+        "docs/images/communication.svg": "e9ee35941ce9d05715c116f7a4c20b58c1b2d640c6d020fc20bf976b173db5a9",
+        "docs/images/communication.png": "e14f815afa44f608671cefd9a71e4732ec2d4640f86743497e09b0dca939c928"
+      }
+    }
+  ]
+}

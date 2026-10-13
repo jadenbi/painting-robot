@@ -1,0 +1,316 @@
+{
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "图像到机器人 · 处理流程",
+    "locale": "zh-CN",
+    "output": "workflow.html"
+  },
+  "lanes": [
+    {
+      "id": "prepare",
+      "label": "图片准备与确认"
+    },
+    {
+      "id": "structure",
+      "label": "可选 skill"
+    },
+    {
+      "id": "binary",
+      "label": "本地图像处理"
+    },
+    {
+      "id": "geometry",
+      "label": "路径拟合与编辑"
+    },
+    {
+      "id": "execution",
+      "label": "计划与 ABB 执行"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "input",
+      "lane": "prepare",
+      "col": 0,
+      "type": "frontend",
+      "label": "导入 / 拍照",
+      "sublabel": "取得输入图片",
+      "width": 150
+    },
+    {
+      "id": "prepare-image",
+      "lane": "prepare",
+      "col": 1,
+      "type": "backend",
+      "label": "图片准备",
+      "sublabel": "可选 API 改图 / 抠图",
+      "width": 150
+    },
+    {
+      "id": "confirm",
+      "lane": "prepare",
+      "col": 2,
+      "type": "frontend",
+      "label": "确认与裁剪",
+      "sublabel": "交接当前图片",
+      "width": 150
+    },
+    {
+      "id": "skill-gate",
+      "lane": "structure",
+      "col": 2,
+      "type": "frontend",
+      "label": "skill 开关",
+      "sublabel": "用户选择处理方式",
+      "width": 150
+    },
+    {
+      "id": "structure-api",
+      "lane": "structure",
+      "col": 3,
+      "type": "cloud",
+      "label": "API 整理结构",
+      "sublabel": "skill 规则 / 输出对齐",
+      "width": 150
+    },
+    {
+      "id": "binarize",
+      "lane": "binary",
+      "col": 3,
+      "type": "backend",
+      "label": "二值化微调",
+      "sublabel": "全图参数 / 自由圈选",
+      "width": 150
+    },
+    {
+      "id": "extract",
+      "lane": "binary",
+      "col": 4,
+      "type": "backend",
+      "label": "线条与黑块",
+      "sublabel": "中心线 / 区域轮廓",
+      "width": 150
+    },
+    {
+      "id": "fit",
+      "lane": "geometry",
+      "col": 4,
+      "type": "backend",
+      "label": "B-spline 拟合",
+      "sublabel": "误差检查 / 分段恢复",
+      "width": 150
+    },
+    {
+      "id": "edit",
+      "lane": "geometry",
+      "col": 3,
+      "type": "frontend",
+      "label": "路径编辑",
+      "sublabel": "调整控制点与节点",
+      "width": 150
+    },
+    {
+      "id": "fill",
+      "lane": "geometry",
+      "col": 2,
+      "type": "backend",
+      "label": "轮廓填充",
+      "sublabel": "当前轮廓 / 填充排序",
+      "width": 150
+    },
+    {
+      "id": "validate",
+      "lane": "execution",
+      "col": 2,
+      "type": "backend",
+      "label": "严格检查",
+      "sublabel": "纸面范围 / 几何采样",
+      "width": 150
+    },
+    {
+      "id": "send",
+      "lane": "execution",
+      "col": 3,
+      "type": "messagebus",
+      "label": "自适应发送",
+      "sublabel": "按可用缓冲容量选择",
+      "width": 150
+    },
+    {
+      "id": "completed",
+      "lane": "execution",
+      "col": 4,
+      "type": "external",
+      "label": "ABB 执行确认",
+      "sublabel": "Stamp / 空闲状态",
+      "width": 150
+    }
+  ],
+  "mainPath": [
+    "input",
+    "prepare-image",
+    "confirm",
+    "skill-gate",
+    "structure-api",
+    "binarize",
+    "extract",
+    "fit",
+    "edit",
+    "fill",
+    "validate",
+    "send",
+    "completed"
+  ],
+  "edges": [
+    {
+      "id": "prepare-input",
+      "from": "input",
+      "to": "prepare-image",
+      "variant": "emphasis"
+    },
+    {
+      "id": "confirm-current",
+      "from": "prepare-image",
+      "to": "confirm",
+      "variant": "emphasis"
+    },
+    {
+      "id": "choose-skill",
+      "from": "confirm",
+      "to": "skill-gate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "skill-enabled",
+      "from": "skill-gate",
+      "to": "structure-api",
+      "variant": "emphasis",
+      "role": "main",
+      "label": "勾选"
+    },
+    {
+      "id": "skill-disabled",
+      "from": "skill-gate",
+      "to": "binarize",
+      "variant": "dashed",
+      "role": "branch",
+      "label": "未勾选：当前图"
+    },
+    {
+      "id": "structured-source",
+      "from": "structure-api",
+      "to": "binarize",
+      "variant": "emphasis",
+      "label": "结构图"
+    },
+    {
+      "id": "extract-geometry",
+      "from": "binarize",
+      "to": "extract",
+      "variant": "emphasis"
+    },
+    {
+      "id": "fit-curves",
+      "from": "extract",
+      "to": "fit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "edit-paths",
+      "from": "fit",
+      "to": "edit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "fill-outline",
+      "from": "edit",
+      "to": "fill",
+      "variant": "emphasis"
+    },
+    {
+      "id": "validate-plan",
+      "from": "fill",
+      "to": "validate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "send-plan",
+      "from": "validate",
+      "to": "send",
+      "variant": "emphasis"
+    },
+    {
+      "id": "confirm-execution",
+      "from": "send",
+      "to": "completed",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "输入选择",
+      "items": [
+        "不勾选 skill：当前确认图直接二值化。",
+        "勾选 skill：先通过 API 配合规则整理结构。",
+        "两种输入采用同一套后续算法与编辑流程。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "几何优化",
+      "items": [
+        "有效墨迹裁边后映射到毫米画布。",
+        "拟合检查误差与尺度，失败局部拆分重拟合。",
+        "修改闭合轮廓后，区域填充跟随当前轮廓。"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "执行约束",
+      "items": [
+        "填充以分块蛇形、最近邻与局部改进减少空走。",
+        "曲线采样为 MOVEL，ABB 不直接执行控制点。",
+        "图像或二值图改变后，旧计划失效并重新生成。"
+      ]
+    }
+  ],
+  "format": "xiaohua-diagram-v1",
+  "scenes": [
+    {
+      "id": "direct",
+      "label": "不使用 skill：直接二值化",
+      "edges": [
+        "prepare-input",
+        "confirm-current",
+        "choose-skill",
+        "skill-disabled",
+        "extract-geometry",
+        "fit-curves",
+        "edit-paths",
+        "fill-outline",
+        "validate-plan",
+        "send-plan",
+        "confirm-execution"
+      ]
+    },
+    {
+      "id": "skill",
+      "label": "使用 skill：结构整理后处理",
+      "edges": [
+        "prepare-input",
+        "confirm-current",
+        "choose-skill",
+        "skill-enabled",
+        "structured-source",
+        "extract-geometry",
+        "fit-curves",
+        "edit-paths",
+        "fill-outline",
+        "validate-plan",
+        "send-plan",
+        "confirm-execution"
+      ]
+    }
+  ]
+}

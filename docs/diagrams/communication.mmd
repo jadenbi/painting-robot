@@ -1,0 +1,23 @@
+sequenceDiagram
+  participant PC as Python 客户端
+  participant N as ABB TASK2 网络任务
+  participant M as ABB TASK1 运动任务
+  PC->>N: 查询空闲 / RESET_BUFFER / 初始 Stamp
+  alt 任务可在配置容量内容纳
+    PC->>N: 连续 CMD 包，保留原中途 START
+    N->>M: 入队；START 触发边收边画
+    PC->>N: 继续余下数据 / MSG_LAST
+    M->>N: 到批尾 ADD_STAMP，完成后递增
+    PC->>N: 查询 Stamp 和 IS_MOVING
+    N-->>PC: Stamp +1 且空闲，完成
+  else 任务超过配置容量
+    loop 每批完整路径
+      PC->>N: CMD + ADD_STAMP + START / LAST
+      N->>M: 本批执行
+      M->>N: WaitRobInPos 后 Stamp +1
+      PC->>N: 轮询 Stamp 和 IS_MOVING
+      N-->>PC: 期望 Stamp +1 且空闲
+      Note over PC: 确认后发送下一批；失败停止续发
+    end
+  end
+  Note over PC,M: 包 ACK 和 LAST 不能证明物理运动完成

@@ -1,0 +1,27 @@
+{
+  "assertions": 119,
+  "reports": [
+    {
+      "diagram": "architecture",
+      "javascript_syntax": "passed",
+      "graph_algorithms": "passed",
+      "mock_dom_interactions": "passed",
+      "browser": "not tested"
+    },
+    {
+      "diagram": "workflow",
+      "javascript_syntax": "passed",
+      "graph_algorithms": "passed",
+      "mock_dom_interactions": "passed",
+      "browser": "not tested"
+    },
+    {
+      "diagram": "communication",
+      "javascript_syntax": "passed",
+      "graph_algorithms": "passed",
+      "mock_dom_interactions": "passed",
+      "browser": "not tested"
+    }
+  ],
+  "test_boundary": "Node.js pure graph and mocked DOM tests; no browser rendering or real download execution"
+}

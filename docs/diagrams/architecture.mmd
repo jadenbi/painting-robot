@@ -1,0 +1,29 @@
+flowchart LR
+  subgraph Browser[浏览器前端]
+    P[导入 / 拍照 / 改图 / 抠图 / 确认]
+    V[本地 WAV 语音指引]
+    C[相机与机器人拍照位入口]
+  end
+  subgraph Local[同一本地 Python 应用]
+    H[localhost HTTP 服务]
+    W[Tk 工作台与后台任务]
+    I[本地图像处理 / B-spline / 填充排序]
+    A[ABB 客户端与计划编译]
+  end
+  Q[API：自由改图 / skill 结构整理]
+  subgraph ABB[ABB 控制器]
+    N[TASK2 网络接收]
+    B[环形队列：容量由 RAPID 配置]
+    M[TASK1 运动与 Stamp]
+  end
+  R[已标定纸面与末端工具]
+  P -->|本地 HTTP| H
+  C --> H
+  H -->|图片交接| W
+  H -->|主动选择的改图| Q
+  W -->|勾选 skill| Q
+  W --> I
+  W --> A
+  A -->|自定义 TCP| N
+  N --> B --> M --> R
+  M -.完成状态.-> A

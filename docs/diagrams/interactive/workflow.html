@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图像到机器人 · 处理流程</title><style>:root{--bg:#f3f5f7;--panel:#fff;--ink:#152a35;--muted:#586c78;--line:#d8e2e8;--accent:#087f72;--soft:#e9f4f2;--node-bg:#fff;--front:#edf7fc;--front-stroke:#2386b1;--back:#eaf6f0;--back-stroke:#38896c;--api:#f3edfa;--api-stroke:#8760b0;--queue:#fff4e6;--queue-stroke:#b88132;--external:#f0f3f5;--external-stroke:#728795;--region:#fafbfc;--region-stroke:#d9e1e6;color-scheme:light}
+[data-theme=dark]{--bg:#101923;--panel:#182430;--ink:#e5edf4;--muted:#acbbc7;--line:#3a4b58;--accent:#60d9c3;--soft:#243c3d;--node-bg:#182430;--front:#183b4d;--front-stroke:#65b6df;--back:#1b3e33;--back-stroke:#6fcea6;--api:#352c4a;--api-stroke:#b698e0;--queue:#483924;--queue-stroke:#e4b363;--external:#2b3640;--external-stroke:#a5b9c7;--region:#1b2935;--region-stroke:#435261;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 'Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif}button,input,select{font:inherit;color:inherit}button,select,input{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}button{cursor:pointer}button:hover{border-color:var(--accent);background:var(--soft)}button:disabled{opacity:.4;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}button.primary{background:var(--accent);color:var(--panel);border-color:var(--accent)}header{max-width:1580px;margin:auto;padding:30px 30px 18px}.eyebrow{color:var(--accent);font-weight:700;letter-spacing:2px;font-size:11px}h1{margin:8px 0;font-size:26px;line-height:1.3}header p{margin:0;color:var(--muted)}.page{max-width:1580px;margin:auto;padding:0 30px 30px}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px}.toolbar .spacer{flex:1}.toolbar label{display:flex;align-items:center;gap:7px}.toolbar select{max-width:300px}#scene-label{color:var(--muted);min-width:125px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:14px;margin-top:14px}.canvas{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative}.viewport{height:min(74vh,850px);min-height:420px;overflow:hidden;touch-action:none;cursor:grab}.viewport:active{cursor:grabbing}.viewport svg{display:block;width:100%;height:100%;user-select:none}.canvas-footer{padding:10px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.side{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;align-self:start;max-height:80vh;overflow:auto}.side h2{font-size:17px;margin:0 0 8px}.side p{color:var(--muted);margin:0 0 12px}.side h3{font-size:12px;color:var(--muted);margin:18px 0 8px}.side .actions{display:flex;flex-wrap:wrap;gap:6px}.side #finder{width:100%;margin-bottom:8px}.results{display:flex;flex-direction:column;gap:5px;max-height:175px;overflow:auto}.results button{text-align:left;font-size:12px}.relation-list{padding-left:18px;font-size:12px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}.card h2{font-size:14px;margin:0 0 10px}.card ul{margin:0;padding-left:18px;color:var(--muted);font-size:12px}.note{color:var(--muted);font-size:12px;margin:14px 0}#status{min-height:24px;color:var(--accent);font-size:12px}#detail-id{font:11px ui-monospace,monospace;color:var(--muted)}#route-controls select{display:block;width:100%;margin:6px 0}.hidden,[hidden]{display:none!important}body.stage header,body.stage .cards,body.stage .note,body.stage .side,body.stage .canvas-footer{display:none}body.stage .page{max-width:none;padding:12px}body.stage .layout{grid-template-columns:1fr}body.stage .viewport{height:calc(100vh - 105px)}
+.c-mask{fill:var(--node-bg);stroke:none}.c-frontend{fill:var(--front);stroke:var(--front-stroke)}.c-backend{fill:var(--back);stroke:var(--back-stroke)}.c-cloud{fill:var(--api);stroke:var(--api-stroke)}.c-messagebus{fill:var(--queue);stroke:var(--queue-stroke)}.c-external{fill:var(--external);stroke:var(--external-stroke)}.c-region{fill:var(--region);stroke:var(--region-stroke)}.t-primary{fill:var(--ink)}.t-muted{fill:var(--muted)}.t-frontend{fill:var(--front-stroke)}.t-backend{fill:var(--back-stroke)}.t-cloud{fill:var(--api-stroke)}.t-messagebus{fill:var(--queue-stroke)}.t-external{fill:var(--external-stroke)}.a-default{stroke:var(--muted)}.a-emphasis{stroke:var(--accent)}.a-dashed{stroke:var(--api-stroke);stroke-dasharray:6 4}.a-security{stroke:var(--queue-stroke)}.m{fill:var(--muted)}.m-emphasis{fill:var(--accent)}.m-dashed{fill:var(--api-stroke)}.m-security{fill:var(--queue-stroke)}svg text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif}[data-node],[data-edge]{cursor:pointer;outline:none;transition:opacity .12s}[data-node]:focus-visible rect:not(.c-mask){stroke:var(--accent);stroke-width:3}.dim{opacity:.17}.match rect:not(.c-mask){stroke:var(--accent);stroke-width:3}.match path{stroke:var(--accent);stroke-width:3}.selected rect:not(.c-mask){stroke:var(--accent);stroke-width:3.5}.selected path{stroke:var(--accent);stroke-width:3.5}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}@media(max-width:1000px){.page,header{padding-left:14px;padding-right:14px}.layout{grid-template-columns:minmax(0,1fr) 250px}.toolbar select{max-width:220px}}@media(max-width:760px){.layout{grid-template-columns:1fr}.viewport{min-height:350px;height:60vh}.side{max-height:none}.cards{grid-template-columns:1fr}h1{font-size:22px}}@media print{header{padding:0}.page{padding:0}.toolbar,.side,.canvas-footer,.note{display:none}.layout{display:block}.viewport{height:auto;min-height:0}.viewport svg{height:auto}.canvas{border:0}.dim{opacity:1}.selected rect,.match rect{stroke-width:1.5}.cards{break-inside:avoid}}
+</style></head>
+<body><header><div class="eyebrow">小画 / INTERACTIVE PROJECT MAP</div><h1>图像到机器人 · 处理流程</h1><p>skill / API · 可配置缓冲容量 · 支持节点探索与分步讲解</p></header>
+<main class="page"><div class="toolbar" aria-label="图表工具栏">
+<label>演示分支 <select id="scene"><option value="direct">不使用 skill：直接二值化</option><option value="skill">使用 skill：结构整理后处理</option></select></label><button id="previous" disabled>上一步</button><button id="next" class="primary">下一步</button><button id="play" aria-pressed="false">播放</button><span id="scene-label" aria-live="polite">准备演示</span><span class="spacer"></span>
+<button id="zoom-out" aria-label="缩小">−</button><span id="zoom-label">100%</span><button id="zoom-in" aria-label="放大">＋</button><button id="fit">适合窗口</button><button id="reset">完整图</button><button id="theme" aria-pressed="false">深色</button><button id="stage" aria-pressed="false">演示模式</button><button id="export-svg">SVG</button><button id="export-png">PNG</button>
+</div><div class="layout"><section class="canvas" aria-label="工程图"><div class="viewport" id="viewport"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1170 890" role="img"><defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m"/></marker><marker id="arrowhead-emphasis" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-emphasis"/></marker><marker id="arrowhead-dashed" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-dashed"/></marker><marker id="arrowhead-security" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="m-security"/></marker></defs>
+<rect x="20" y="25" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="73" class="t-primary" font-size="13" text-anchor="start" font-weight="600">图片准备</text>
+<text x="35" y="95" class="t-primary" font-size="13" text-anchor="start" font-weight="600">与确认</text>
+<rect x="20" y="183" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="231" class="t-primary" font-size="13" text-anchor="start" font-weight="600">可选 skill</text>
+<rect x="20" y="341" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="389" class="t-primary" font-size="13" text-anchor="start" font-weight="600">本地图像处理</text>
+<rect x="20" y="499" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="547" class="t-primary" font-size="13" text-anchor="start" font-weight="600">路径拟合</text>
+<text x="35" y="569" class="t-primary" font-size="13" text-anchor="start" font-weight="600">与编辑</text>
+<rect x="20" y="657" width="1130" height="128" rx="12" class="c-region" stroke-width="1.5"/>
+<text x="35" y="705" class="t-primary" font-size="13" text-anchor="start" font-weight="600">计划与</text>
+<text x="35" y="727" class="t-primary" font-size="13" text-anchor="start" font-weight="600">ABB 执行</text>
+<g data-edge="prepare-input" tabindex="0" role="button" aria-label="prepare-input"><path d="M295,88 L345,88" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="confirm-current" tabindex="0" role="button" aria-label="confirm-current"><path d="M495,88 L545,88" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="choose-skill" tabindex="0" role="button" aria-label="choose-skill"><path d="M620,126 L620,208" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="skill-enabled" tabindex="0" role="button" aria-label="勾选"><path d="M695,246 L745,246" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="720.0" y="234" class="t-muted" font-size="12" text-anchor="middle">勾选</text>
+</g>
+<g data-edge="skill-disabled" tabindex="0" role="button" aria-label="未勾选：当前图"><path d="M620,284 L620,404 L745,404" class="a-dashed" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-dashed)"/>
+<text x="660" y="391" class="t-muted" font-size="12" text-anchor="middle">未勾选：当前图</text>
+</g>
+<g data-edge="structured-source" tabindex="0" role="button" aria-label="结构图"><path d="M820,284 L820,366" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+<text x="865" y="325.0" class="t-muted" font-size="12" text-anchor="middle">结构图</text>
+</g>
+<g data-edge="extract-geometry" tabindex="0" role="button" aria-label="extract-geometry"><path d="M895,404 L945,404" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="fit-curves" tabindex="0" role="button" aria-label="fit-curves"><path d="M1020,442 L1020,524" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="edit-paths" tabindex="0" role="button" aria-label="edit-paths"><path d="M945,562 L895,562" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="fill-outline" tabindex="0" role="button" aria-label="fill-outline"><path d="M745,562 L695,562" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="validate-plan" tabindex="0" role="button" aria-label="validate-plan"><path d="M620,600 L620,682" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="send-plan" tabindex="0" role="button" aria-label="send-plan"><path d="M695,720 L745,720" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-edge="confirm-execution" tabindex="0" role="button" aria-label="confirm-execution"><path d="M895,720 L945,720" class="a-emphasis" stroke-width="1.7" fill="none" marker-end="url(#arrowhead-emphasis)"/>
+</g>
+<g data-node="input" tabindex="0" role="button" aria-label="导入 / 拍照">
+<rect x="145" y="50" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="145" y="50" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="220.0" y="78" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">导入 / 拍照</text>
+<text x="220.0" y="99" class="t-muted" font-size="11" text-anchor="middle">取得输入图片</text>
+</g>
+<g data-node="prepare-image" tabindex="0" role="button" aria-label="图片准备">
+<rect x="345" y="50" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="345" y="50" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="420.0" y="78" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">图片准备</text>
+<text x="420.0" y="99" class="t-muted" font-size="11" text-anchor="middle">可选 API 改图 / 抠图</text>
+</g>
+<g data-node="confirm" tabindex="0" role="button" aria-label="确认与裁剪">
+<rect x="545" y="50" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="50" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="620.0" y="78" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">确认与裁剪</text>
+<text x="620.0" y="99" class="t-muted" font-size="11" text-anchor="middle">交接当前图片</text>
+</g>
+<g data-node="skill-gate" tabindex="0" role="button" aria-label="skill 开关">
+<rect x="545" y="208" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="208" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="620.0" y="236" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">skill 开关</text>
+<text x="620.0" y="257" class="t-muted" font-size="11" text-anchor="middle">用户选择处理方式</text>
+</g>
+<g data-node="structure-api" tabindex="0" role="button" aria-label="API 整理结构">
+<rect x="745" y="208" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="208" width="150" height="76" rx="8" class="c-cloud" stroke-width="1.5"/>
+<text x="820.0" y="236" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">API 整理结构</text>
+<text x="820.0" y="257" class="t-muted" font-size="11" text-anchor="middle">skill 规则 / 输出对齐</text>
+</g>
+<g data-node="binarize" tabindex="0" role="button" aria-label="二值化微调">
+<rect x="745" y="366" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="366" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="820.0" y="394" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">二值化微调</text>
+<text x="820.0" y="415" class="t-muted" font-size="11" text-anchor="middle">全图参数 / 自由圈选</text>
+</g>
+<g data-node="extract" tabindex="0" role="button" aria-label="线条与黑块">
+<rect x="945" y="366" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="945" y="366" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="1020.0" y="394" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">线条与黑块</text>
+<text x="1020.0" y="415" class="t-muted" font-size="11" text-anchor="middle">中心线 / 区域轮廓</text>
+</g>
+<g data-node="fit" tabindex="0" role="button" aria-label="B-spline 拟合">
+<rect x="945" y="524" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="945" y="524" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="1020.0" y="552" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">B-spline 拟合</text>
+<text x="1020.0" y="573" class="t-muted" font-size="11" text-anchor="middle">误差检查 / 分段恢复</text>
+</g>
+<g data-node="edit" tabindex="0" role="button" aria-label="路径编辑">
+<rect x="745" y="524" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="524" width="150" height="76" rx="8" class="c-frontend" stroke-width="1.5"/>
+<text x="820.0" y="552" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">路径编辑</text>
+<text x="820.0" y="573" class="t-muted" font-size="11" text-anchor="middle">调整控制点与节点</text>
+</g>
+<g data-node="fill" tabindex="0" role="button" aria-label="轮廓填充">
+<rect x="545" y="524" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="524" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="620.0" y="552" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">轮廓填充</text>
+<text x="620.0" y="573" class="t-muted" font-size="11" text-anchor="middle">当前轮廓 / 填充排序</text>
+</g>
+<g data-node="validate" tabindex="0" role="button" aria-label="严格检查">
+<rect x="545" y="682" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="545" y="682" width="150" height="76" rx="8" class="c-backend" stroke-width="1.5"/>
+<text x="620.0" y="710" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">严格检查</text>
+<text x="620.0" y="731" class="t-muted" font-size="11" text-anchor="middle">纸面范围 / 几何采样</text>
+</g>
+<g data-node="send" tabindex="0" role="button" aria-label="自适应发送">
+<rect x="745" y="682" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="745" y="682" width="150" height="76" rx="8" class="c-messagebus" stroke-width="1.5"/>
+<text x="820.0" y="710" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">自适应发送</text>
+<text x="820.0" y="731" class="t-muted" font-size="11" text-anchor="middle">按可用缓冲容量选择</text>
+</g>
+<g data-node="completed" tabindex="0" role="button" aria-label="ABB 执行确认">
+<rect x="945" y="682" width="150" height="76" rx="8" class="c-mask" stroke-width="1.5"/>
+<rect x="945" y="682" width="150" height="76" rx="8" class="c-external" stroke-width="1.5"/>
+<text x="1020.0" y="710" class="t-primary" font-size="15" text-anchor="middle" font-weight="600">ABB 执行确认</text>
+<text x="1020.0" y="731" class="t-muted" font-size="11" text-anchor="middle">Stamp / 空闲状态</text>
+</g>
+<rect x="95" y="847" width="18" height="12" rx="8" class="c-frontend" stroke-width="1.5"/>
+<rect x="245" y="847" width="18" height="12" rx="8" class="c-backend" stroke-width="1.5"/>
+<rect x="395" y="847" width="18" height="12" rx="8" class="c-cloud" stroke-width="1.5"/>
+<rect x="545" y="847" width="18" height="12" rx="8" class="c-messagebus" stroke-width="1.5"/>
+<rect x="745" y="847" width="18" height="12" rx="8" class="c-external" stroke-width="1.5"/>
+<text x="30" y="858" class="t-primary" font-size="12" text-anchor="start" font-weight="600">图例</text>
+<text x="121" y="858" class="t-muted" font-size="11" text-anchor="start">交互入口</text>
+<text x="271" y="858" class="t-muted" font-size="11" text-anchor="start">本地计算</text>
+<text x="421" y="858" class="t-muted" font-size="11" text-anchor="start">API</text>
+<text x="571" y="858" class="t-muted" font-size="11" text-anchor="start">通信与队列</text>
+<text x="771" y="858" class="t-muted" font-size="11" text-anchor="start">实际执行</text></svg></div><div class="canvas-footer">点击节点或连线查看详情 · 拖动空白处移动 · Ctrl + 滚轮缩放 · Esc 返回完整图</div></section>
+<aside class="side"><h2 id="detail-title">探索工程图</h2><p id="detail-description">选择模块查看连接；演示工具按预设分支逐步讲解。高亮表示文档中的关系，不表示机器人实时状态。</p><div id="detail-id"></div><div class="actions" id="reach-controls"><button id="upstream" disabled>上游</button><button id="downstream" disabled>下游</button></div><div id="relation-detail"></div>
+<h3>查找模块</h3><input id="finder" type="search" placeholder="输入模块名称" aria-label="查找模块"><div id="results" class="results"></div>
+<div id="route-controls"><h3>追踪有向路径</h3><select id="route-from" aria-label="路径起点"></select><select id="route-to" aria-label="路径终点"></select><button id="route">追踪路径</button></div><p id="sequence-note" hidden>通信图按消息时间顺序演示；参与者之间的多次往返不用于推断聚合路径。</p><div id="status" role="status" aria-live="polite"></div></aside></div>
+<div class="cards"><section class="card"><h2>输入选择</h2><ul><li>不勾选 skill：当前确认图直接二值化。</li><li>勾选 skill：先通过 API 配合规则整理结构。</li><li>两种输入采用同一套后续算法与编辑流程。</li></ul></section><section class="card"><h2>几何优化</h2><ul><li>有效墨迹裁边后映射到毫米画布。</li><li>拟合检查误差与尺度，失败局部拆分重拟合。</li><li>修改闭合轮廓后，区域填充跟随当前轮廓。</li></ul></section><section class="card"><h2>执行约束</h2><ul><li>填充以分块蛇形、最近邻与局部改进减少空走。</li><li>曲线采样为 MOVEL，ABB 不直接执行控制点。</li><li>图像或二值图改变后，旧计划失效并重新生成。</li></ul></section></div><p class="note">参考 Archify 3.x 的交互设计，本页为项目本地实现。图表由布局 JSON 生成，主题与阅读状态不会改动应用代码；静态导出保留完整图。开源来源及许可见同目录的 THIRD-PARTY-NOTICE.md。</p></main>
+<script id="diagram-data" type="application/json">{"diagram_type": "workflow", "meta": {"title": "图像到机器人 · 处理流程", "locale": "zh-CN", "output": "workflow.html"}, "lanes": [{"id": "prepare", "label": "图片准备与确认"}, {"id": "structure", "label": "可选 skill"}, {"id": "binary", "label": "本地图像处理"}, {"id": "geometry", "label": "路径拟合与编辑"}, {"id": "execution", "label": "计划与 ABB 执行"}], "nodes": [{"id": "input", "lane": "prepare", "col": 0, "type": "frontend", "label": "导入 / 拍照", "sublabel": "取得输入图片", "width": 150}, {"id": "prepare-image", "lane": "prepare", "col": 1, "type": "backend", "label": "图片准备", "sublabel": "可选 API 改图 / 抠图", "width": 150}, {"id": "confirm", "lane": "prepare", "col": 2, "type": "frontend", "label": "确认与裁剪", "sublabel": "交接当前图片", "width": 150}, {"id": "skill-gate", "lane": "structure", "col": 2, "type": "frontend", "label": "skill 开关", "sublabel": "用户选择处理方式", "width": 150}, {"id": "structure-api", "lane": "structure", "col": 3, "type": "cloud", "label": "API 整理结构", "sublabel": "skill 规则 / 输出对齐", "width": 150}, {"id": "binarize", "lane": "binary", "col": 3, "type": "backend", "label": "二值化微调", "sublabel": "全图参数 / 自由圈选", "width": 150}, {"id": "extract", "lane": "binary", "col": 4, "type": "backend", "label": "线条与黑块", "sublabel": "中心线 / 区域轮廓", "width": 150}, {"id": "fit", "lane": "geometry", "col": 4, "type": "backend", "label": "B-spline 拟合", "sublabel": "误差检查 / 分段恢复", "width": 150}, {"id": "edit", "lane": "geometry", "col": 3, "type": "frontend", "label": "路径编辑", "sublabel": "调整控制点与节点", "width": 150}, {"id": "fill", "lane": "geometry", "col": 2, "type": "backend", "label": "轮廓填充", "sublabel": "当前轮廓 / 填充排序", "width": 150}, {"id": "validate", "lane": "execution", "col": 2, "type": "backend", "label": "严格检查", "sublabel": "纸面范围 / 几何采样", "width": 150}, {"id": "send", "lane": "execution", "col": 3, "type": "messagebus", "label": "自适应发送", "sublabel": "按可用缓冲容量选择", "width": 150}, {"id": "completed", "lane": "execution", "col": 4, "type": "external", "label": "ABB 执行确认", "sublabel": "Stamp / 空闲状态", "width": 150}], "mainPath": ["input", "prepare-image", "confirm", "skill-gate", "structure-api", "binarize", "extract", "fit", "edit", "fill", "validate", "send", "completed"], "edges": [{"id": "prepare-input", "from": "input", "to": "prepare-image", "variant": "emphasis"}, {"id": "confirm-current", "from": "prepare-image", "to": "confirm", "variant": "emphasis"}, {"id": "choose-skill", "from": "confirm", "to": "skill-gate", "variant": "emphasis"}, {"id": "skill-enabled", "from": "skill-gate", "to": "structure-api", "variant": "emphasis", "role": "main", "label": "勾选"}, {"id": "skill-disabled", "from": "skill-gate", "to": "binarize", "variant": "dashed", "role": "branch", "label": "未勾选：当前图"}, {"id": "structured-source", "from": "structure-api", "to": "binarize", "variant": "emphasis", "label": "结构图"}, {"id": "extract-geometry", "from": "binarize", "to": "extract", "variant": "emphasis"}, {"id": "fit-curves", "from": "extract", "to": "fit", "variant": "emphasis"}, {"id": "edit-paths", "from": "fit", "to": "edit", "variant": "emphasis"}, {"id": "fill-outline", "from": "edit", "to": "fill", "variant": "emphasis"}, {"id": "validate-plan", "from": "fill", "to": "validate", "variant": "emphasis"}, {"id": "send-plan", "from": "validate", "to": "send", "variant": "emphasis"}, {"id": "confirm-execution", "from": "send", "to": "completed", "variant": "emphasis"}], "cards": [{"dot": "cyan", "title": "输入选择", "items": ["不勾选 skill：当前确认图直接二值化。", "勾选 skill：先通过 API 配合规则整理结构。", "两种输入采用同一套后续算法与编辑流程。"]}, {"dot": "emerald", "title": "几何优化", "items": ["有效墨迹裁边后映射到毫米画布。", "拟合检查误差与尺度，失败局部拆分重拟合。", "修改闭合轮廓后，区域填充跟随当前轮廓。"]}, {"dot": "orange", "title": "执行约束", "items": ["填充以分块蛇形、最近邻与局部改进减少空走。", "曲线采样为 MOVEL，ABB 不直接执行控制点。", "图像或二值图改变后，旧计划失效并重新生成。"]}], "format": "xiaohua-diagram-v1", "scenes": [{"id": "direct", "label": "不使用 skill：直接二值化", "edges": ["prepare-input", "confirm-current", "choose-skill", "skill-disabled", "extract-geometry", "fit-curves", "edit-paths", "fill-outline", "validate-plan", "send-plan", "confirm-execution"]}, {"id": "skill", "label": "使用 skill：结构整理后处理", "edges": ["prepare-input", "confirm-current", "choose-skill", "skill-enabled", "structured-source", "extract-geometry", "fit-curves", "edit-paths", "fill-outline", "validate-plan", "send-plan", "confirm-execution"]}]}</script><script>/* Pure graph operations shared by the viewer and offline tests. */
+(function (root) {
+  'use strict';
+  function normalize(data) {
+    return {kind: data.diagram_type, nodes: data.components || data.nodes || data.participants || [], edges: data.connections || data.edges || data.messages || [], scenes: data.scenes || []};
+  }
+  function validate(graph) {
+    const ids = new Set(), edgeIds = new Set();
+    for (const n of graph.nodes) { if (!n.id || ids.has(n.id)) throw Error('节点编号重复或为空'); ids.add(n.id); }
+    for (const e of graph.edges) {
+      if (!e.id || edgeIds.has(e.id) || !ids.has(e.from) || !ids.has(e.to)) throw Error('连线编号或端点无效');
+      edgeIds.add(e.id);
+    }
+    const scenes = new Set();
+    for (const scene of graph.scenes) {
+      if (!scene.id || scenes.has(scene.id) || !scene.edges.length || scene.edges.some(id => !edgeIds.has(id))) throw Error('演示场景无效');
+      scenes.add(scene.id);
+      const edges = scene.edges.map(id => graph.edges.find(e => e.id === id));
+      if (graph.kind === 'sequence') {
+        if (edges.some((e,i) => i > 0 && e.y < edges[i-1].y)) throw Error('时序消息顺序无效');
+      } else if (edges.some((e,i) => i > 0 && e.from !== edges[i-1].to)) throw Error('演示路径不连续');
+    }
+    return graph;
+  }
+  function route(graph, source, target) {
+    if (graph.kind === 'sequence') throw Error('时序图请按消息顺序演示');
+    if (![source,target].every(id => graph.nodes.some(n => n.id === id))) return null;
+    const queue=[{node:source,nodes:[source],edges:[]}], seen=new Set([source]);
+    while (queue.length) {
+      const current=queue.shift();
+      if (current.node===target) return {nodes:current.nodes,edges:current.edges};
+      for (const edge of graph.edges.filter(e => e.from===current.node)) {
+        if (seen.has(edge.to)) continue;
+        seen.add(edge.to); queue.push({node:edge.to,nodes:[...current.nodes,edge.to],edges:[...current.edges,edge.id]});
+      }
+    }
+    return null;
+  }
+  function reach(graph, origin, direction) {
+    if (graph.kind === 'sequence') throw Error('时序图请按消息顺序演示');
+    if (!['upstream','downstream'].includes(direction) || !graph.nodes.some(n => n.id===origin)) throw Error('关系查询无效');
+    const queue=[origin], nodes=new Set([origin]), edges=new Set();
+    while (queue.length) {
+      const id=queue.shift();
+      for (const edge of graph.edges) {
+        if ((direction==='downstream'?edge.from:edge.to)!==id) continue;
+        const next=direction==='downstream'?edge.to:edge.from;
+        edges.add(edge.id);
+        if (!nodes.has(next)) {nodes.add(next);queue.push(next);}
+      }
+    }
+    return {nodes:[...nodes],edges:[...edges]};
+  }
+  function search(graph, term) {
+    const q=term.trim().toLocaleLowerCase();
+    return graph.nodes.filter(n => [n.id,n.label,n.sublabel||''].some(t => t.toLocaleLowerCase().includes(q)));
+  }
+  const api={normalize,validate,route,reach,search};
+  if (typeof module!=='undefined' && module.exports) module.exports=api;
+  else root.DiagramGraph=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+/* Project-specific interaction layer inspired by Archify 3.x viewer concepts.
+   No official Archify runtime is copied or required. */
+(function () {
+  'use strict';
+  const $=id=>document.getElementById(id), core=globalThis.DiagramGraph;
+  const data=JSON.parse($('diagram-data').textContent), graph=core.validate(core.normalize(data));
+  const svg=$('viewport').querySelector('svg');
+  const base=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+  const nodeElements=new Map([...svg.querySelectorAll('[data-node]')].map(el=>[el.dataset.node,el]));
+  const edgeElements=new Map([...svg.querySelectorAll('[data-edge]')].map(el=>[el.dataset.edge,el]));
+  let focused=null, currentScene=graph.scenes[0], index=-1, playing=null, camera=[...base];
+  const sequence=graph.kind==='sequence';
+  const status=text=>{$('status').textContent=text;};
+  function stop() {if(playing!==null) clearInterval(playing);playing=null;$('play').textContent='播放';$('play').setAttribute('aria-pressed','false');}
+  function clearHighlights() {
+    for(const el of [...nodeElements.values(),...edgeElements.values()]) el.classList.remove('dim','match','selected');
+  }
+  function highlight(nodes,edges) {
+    const ns=new Set(nodes), es=new Set(edges);
+    for(const [id,el] of nodeElements) {el.classList.toggle('dim',!ns.has(id));el.classList.toggle('match',ns.has(id));el.classList.remove('selected');}
+    for(const [id,el] of edgeElements) {el.classList.toggle('dim',!es.has(id));el.classList.toggle('match',es.has(id));el.classList.remove('selected');}
+  }
+  function relations(node) {
+    const incoming=graph.edges.filter(e=>e.to===node), outgoing=graph.edges.filter(e=>e.from===node);
+    const names=new Map(graph.nodes.map(n=>[n.id,n.label]));
+    const container=$('relation-detail');container.replaceChildren();
+    for(const [title,items,other] of [['进入关系',incoming,'from'],['离开关系',outgoing,'to']]) {
+      const heading=document.createElement('h3');heading.textContent=title;container.append(heading);
+      const list=document.createElement('ul');list.className='relation-list';
+      for(const edge of items) {const li=document.createElement('li');li.textContent=names.get(edge[other])+(edge.label?' · '+edge.label:'');list.append(li);}
+      if(!items.length){const li=document.createElement('li');li.textContent='图中未定义';list.append(li);}
+      container.append(list);
+    }
+  }
+  function focus(id) {
+    const node=graph.nodes.find(n=>n.id===id);if(!node)return;
+    stop();clearHighlights();focused=id;nodeElements.get(id).classList.add('selected');
+    $('detail-title').textContent=node.label;$('detail-description').textContent=node.sublabel||'';$('detail-id').textContent=node.id;
+    $('upstream').disabled=sequence;$('downstream').disabled=sequence;relations(id);
+    status('已选中模块');
+  }
+  function focusEdge(id) {
+    const edge=graph.edges.find(e=>e.id===id);if(!edge)return;
+    stop();highlight([edge.from,edge.to],[id]);focused=null;edgeElements.get(id).classList.add('selected');
+    $('detail-title').textContent=edge.label||'模块连接';
+    $('detail-description').textContent=graph.nodes.find(n=>n.id===edge.from).label+' → '+graph.nodes.find(n=>n.id===edge.to).label;
+    $('detail-id').textContent=id;$('relation-detail').replaceChildren();$('upstream').disabled=true;$('downstream').disabled=true;
+    status(sequence?'这是消息关系，请结合所选分支的时间顺序查看。':'这是源码中定义的有向关系。');
+  }
+  function traceReach(direction) {
+    if(!focused)return null;
+    const found=core.reach(graph,focused,direction);highlight(found.nodes,found.edges);nodeElements.get(focused).classList.add('selected');
+    status((direction==='upstream'?'上游':'下游')+'：'+(found.nodes.length-1)+' 个关联模块；表示已定义关系。');return found;
+  }
+  function traceRoute(from,to) {
+    stop();focused=null;$('upstream').disabled=true;$('downstream').disabled=true;
+    const found=core.route(graph,from,to);
+    if(!found){clearHighlights();status('两点之间没有已定义的有向路径。');return null;}
+    highlight(found.nodes,found.edges);$('detail-title').textContent='有向路径';$('detail-description').textContent=found.nodes.map(id=>graph.nodes.find(n=>n.id===id).label).join(' → ');
+    $('detail-id').textContent='';$('relation-detail').replaceChildren();status(found.edges.length+' 条连接；按连接数选取一条最短路径，非机器人运动规划。');return found;
+  }
+  function sceneEdges(){return currentScene.edges.map(id=>graph.edges.find(e=>e.id===id));}
+  function updateStepControls() {
+    $('previous').disabled=index<=0;$('next').disabled=index>=currentScene.edges.length-1;
+    $('scene-label').textContent=index<0?'共 '+currentScene.edges.length+' 步':(index+1)+' / '+currentScene.edges.length;
+  }
+  function setScene(id) {
+    const scene=graph.scenes.find(s=>s.id===id);if(!scene)return;
+    stop();currentScene=scene;$('scene').value=id;index=-1;focused=null;
+    const edges=sceneEdges();highlight(edges.flatMap(e=>[e.from,e.to]),scene.edges);
+    $('detail-title').textContent=scene.label;$('detail-description').textContent='点击下一步或播放，按该分支的顺序讲解。';$('detail-id').textContent='';$('relation-detail').replaceChildren();
+    $('upstream').disabled=true;$('downstream').disabled=true;updateStepControls();status('已显示所选分支，其他内容保留为背景。');
+  }
+  function step(delta=1) {
+    index=Math.max(0,Math.min(currentScene.edges.length-1,index+delta));
+    const edge=sceneEdges()[index];highlight([edge.from,edge.to],[edge.id]);
+    $('detail-title').textContent=edge.label||'步骤 '+(index+1);$('detail-description').textContent=graph.nodes.find(n=>n.id===edge.from).label+' → '+graph.nodes.find(n=>n.id===edge.to).label;
+    $('detail-id').textContent=edge.id;focused=null;$('upstream').disabled=true;$('downstream').disabled=true;$('relation-detail').replaceChildren();updateStepControls();
+    status(currentScene.label+' · 第 '+(index+1)+' 步');if(index===currentScene.edges.length-1)stop();return edge.id;
+  }
+  function play() {
+    if(playing!==null){stop();return;}
+    if(index===currentScene.edges.length-1)index=-1;
+    step(1);
+    if(index<currentScene.edges.length-1){playing=setInterval(()=>step(1),1800);$('play').textContent='暂停';$('play').setAttribute('aria-pressed','true');}
+  }
+  function reset() {
+    stop();focused=null;index=-1;clearHighlights();$('detail-title').textContent='探索工程图';$('detail-description').textContent='选择模块查看连接；演示工具按预设分支逐步讲解。高亮表示文档中的关系，不表示机器人实时状态。';$('detail-id').textContent='';$('relation-detail').replaceChildren();
+    $('upstream').disabled=true;$('downstream').disabled=true;updateStepControls();status('已恢复完整图。');
+  }
+  function applyCamera() {svg.setAttribute('viewBox',camera.join(' '));$('zoom-label').textContent=Math.round(base[2]/camera[2]*100)+'%';}
+  function zoom(factor) {
+    const scale=Math.min(4,Math.max(.5,base[2]/camera[2]*factor)), w=base[2]/scale,h=base[3]/scale;
+    camera=[camera[0]+(camera[2]-w)/2,camera[1]+(camera[3]-h)/2,w,h];applyCamera();
+  }
+  function fit(){camera=[...base];applyCamera();}
+  function exportSVGText() {
+    const clone=svg.cloneNode(true);clone.setAttribute('viewBox',base.join(' '));clone.setAttribute('width',base[2]);clone.setAttribute('height',base[3]);clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    for(const el of clone.querySelectorAll('.dim,.match,.selected')) el.classList.remove('dim','match','selected');
+    for(const el of clone.querySelectorAll('[tabindex]')) {el.removeAttribute('tabindex');el.removeAttribute('role');}
+    const computed=getComputedStyle(document.documentElement), variables=[...document.querySelector('style').textContent.matchAll(/(--[\w-]+):/g)].map(m=>m[1]);
+    clone.setAttribute('style',[...new Set(variables)].map(key=>key+':'+computed.getPropertyValue(key)).join(';'));
+    const style=document.createElementNS('http://www.w3.org/2000/svg','style');
+    const css=document.querySelector('style').textContent;style.textContent=css.slice(css.indexOf('.c-mask'),css.indexOf('[data-node],[data-edge]'));
+    clone.insertBefore(style,clone.firstChild);
+    const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('width','100%');bg.setAttribute('height','100%');bg.setAttribute('fill',computed.getPropertyValue('--panel'));clone.insertBefore(bg,style.nextSibling);
+    return new XMLSerializer().serializeToString(clone);
+  }
+  function download(blob,extension) {
+    const url=URL.createObjectURL(blob), a=document.createElement('a');a.href=url;a.download=data.meta.output.replace(/\.html$/,'.'+extension);document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  function exportSVG(){stop();download(new Blob([exportSVGText()],{type:'image/svg+xml;charset=utf-8'}),'svg');status('已导出完整 SVG。');}
+  async function exportPNG() {
+    stop();$('export-png').disabled=true;
+    const url=URL.createObjectURL(new Blob([exportSVGText()],{type:'image/svg+xml;charset=utf-8'}));
+    try {
+      const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(Error('SVG 图形无法加载'));img.src=url;});
+      const canvas=document.createElement('canvas');canvas.width=base[2]*2;canvas.height=base[3]*2;const ctx=canvas.getContext('2d');if(!ctx)throw Error('无法创建图片画布');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('无法编码 PNG')),'image/png'));download(blob,'png');status('已导出完整 PNG，2 倍分辨率。');
+    } catch(err){status('导出失败：'+err.message);} finally{URL.revokeObjectURL(url);$('export-png').disabled=false;}
+  }
+  for(const [id,el] of nodeElements){el.addEventListener('click',()=>focus(id));el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();focus(id);}});}
+  for(const [id,el] of edgeElements){el.addEventListener('click',()=>focusEdge(id));el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();focusEdge(id);}});}
+  function finder(){const results=$('results');results.replaceChildren();for(const node of core.search(graph,$('finder').value)){const button=document.createElement('button');button.textContent=node.label;button.addEventListener('click',()=>focus(node.id));results.append(button);}}
+  $('finder').addEventListener('input',finder);finder();
+  for(const id of ['route-from','route-to'])for(const node of graph.nodes){const option=document.createElement('option');option.value=node.id;option.textContent=node.label;$(id).append(option);}
+  $('route-from').value=graph.nodes[0].id;$('route-to').value=graph.nodes[graph.nodes.length-1].id;
+  $('route-controls').hidden=sequence;$('reach-controls').hidden=sequence;$('sequence-note').hidden=!sequence;
+  $('upstream').addEventListener('click',()=>traceReach('upstream'));$('downstream').addEventListener('click',()=>traceReach('downstream'));
+  $('route').addEventListener('click',()=>traceRoute($('route-from').value,$('route-to').value));
+  $('scene').addEventListener('change',()=>setScene($('scene').value));$('previous').addEventListener('click',()=>{stop();step(-1);});$('next').addEventListener('click',()=>{stop();step(1);});$('play').addEventListener('click',play);
+  $('zoom-in').addEventListener('click',()=>zoom(1.25));$('zoom-out').addEventListener('click',()=>zoom(.8));$('fit').addEventListener('click',fit);$('reset').addEventListener('click',()=>{reset();fit();});
+  $('theme').addEventListener('click',()=>{const dark=document.documentElement.dataset.theme!=='dark';document.documentElement.dataset.theme=dark?'dark':'light';$('theme').textContent=dark?'浅色':'深色';$('theme').setAttribute('aria-pressed',String(dark));});
+  $('stage').addEventListener('click',()=>{const active=document.body.classList.toggle('stage');$('stage').textContent=active?'退出演示':'演示模式';$('stage').setAttribute('aria-pressed',String(active));});
+  $('export-svg').addEventListener('click',exportSVG);$('export-png').addEventListener('click',exportPNG);
+  let drag=null;
+  $('viewport').addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('[data-node],[data-edge]'))return;drag={x:e.clientX,y:e.clientY,camera:[...camera]};$('viewport').setPointerCapture(e.pointerId);});
+  $('viewport').addEventListener('pointermove',e=>{if(!drag)return;const rect=svg.getBoundingClientRect(), units=Math.max(drag.camera[2]/rect.width,drag.camera[3]/rect.height);camera=[drag.camera[0]-(e.clientX-drag.x)*units,drag.camera[1]-(e.clientY-drag.y)*units,...drag.camera.slice(2)];applyCamera();});
+  for(const event of ['pointerup','pointercancel','lostpointercapture'])$('viewport').addEventListener(event,()=>{drag=null;});
+  $('viewport').addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();zoom(e.deltaY<0?1.15:1/1.15);},{passive:false});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});window.addEventListener('beforeprint',()=>{stop();reset();fit();});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){document.body.classList.remove('stage');$('stage').textContent='演示模式';$('stage').setAttribute('aria-pressed','false');reset();fit();return;}
+    if(e.target.closest('input,select,textarea'))return;
+    if(e.key==='ArrowRight'){e.preventDefault();stop();step(1);}else if(e.key==='ArrowLeft'){e.preventDefault();stop();step(-1);}else if(e.key.toLowerCase()==='f')$('stage').click();
+  });
+  reset();
+  globalThis.XiaohuaDiagram={focus,traceReach,traceRoute,setScene,step,reset,exportSVGText,fit,zoom};
+})();
+</script></body></html>

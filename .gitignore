@@ -1,0 +1,16 @@
+# Merge these rules into the application's existing .gitignore when publishing.
+.obsidian/
+.painting-api.json
+.env
+.env.*
+.venv*/
+__pycache__/
+*.py[cod]
+*.log
+camera/frontend_sessions/
+camera/structure_cache/
+camera/semantic_cache/
+**/pretrained/
+
+*.drawproj
+# Review other user image/data directories separately; do not delete them.

@@ -1,0 +1,286 @@
+{
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "小画画像机器人 · 系统架构",
+    "locale": "zh-CN",
+    "output": "architecture.html"
+  },
+  "components": [
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "浏览器前端",
+      "sublabel": "导入 / 拍照 / 图片确认",
+      "pos": [
+        60,
+        245
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "preparation",
+      "type": "backend",
+      "label": "图片准备服务",
+      "sublabel": "localhost / 异步处理",
+      "pos": [
+        400,
+        245
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "workbench",
+      "type": "frontend",
+      "label": "绘图工作台",
+      "sublabel": "裁剪 / skill 开关",
+      "pos": [
+        740,
+        245
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "image_api",
+      "type": "cloud",
+      "label": "API",
+      "sublabel": "自由改图 / skill 结构整理",
+      "pos": [
+        740,
+        45
+      ],
+      "size": [
+        200,
+        76
+      ],
+      "tag": "按用户选择调用"
+    },
+    {
+      "id": "image_algorithms",
+      "type": "backend",
+      "label": "本地图像算法",
+      "sublabel": "二值化 / 中心线与黑块",
+      "pos": [
+        740,
+        450
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "path_document",
+      "type": "backend",
+      "label": "可编辑路径文档",
+      "sublabel": "B-spline / 轮廓填充",
+      "pos": [
+        400,
+        450
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "robot_client",
+      "type": "backend",
+      "label": "ABB 客户端",
+      "sublabel": "计划检查 / 容量自适应",
+      "pos": [
+        60,
+        450
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "rapid_queue",
+      "type": "messagebus",
+      "label": "接收与共享队列",
+      "sublabel": "RAPID / 可配置容量",
+      "pos": [
+        60,
+        655
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "rapid_motion",
+      "type": "backend",
+      "label": "运动执行任务",
+      "sublabel": "MOVEL / 完成 Stamp",
+      "pos": [
+        400,
+        655
+      ],
+      "size": [
+        200,
+        76
+      ]
+    },
+    {
+      "id": "physical_drawing",
+      "type": "external",
+      "label": "物理绘制",
+      "sublabel": "标定纸面 / 末端工具",
+      "pos": [
+        740,
+        655
+      ],
+      "size": [
+        200,
+        76
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "local-request",
+      "from": "browser",
+      "to": "preparation",
+      "variant": "emphasis",
+      "label": "本地 HTTP"
+    },
+    {
+      "id": "confirmed-handoff",
+      "from": "preparation",
+      "to": "workbench",
+      "variant": "emphasis",
+      "label": "确认后交接"
+    },
+    {
+      "id": "free-edit-call",
+      "from": "preparation",
+      "to": "image_api",
+      "variant": "dashed",
+      "label": "选择自由改图"
+    },
+    {
+      "id": "skill-call",
+      "from": "workbench",
+      "to": "image_api",
+      "variant": "dashed",
+      "label": "勾选 skill"
+    },
+    {
+      "id": "image-process",
+      "from": "workbench",
+      "to": "image_algorithms",
+      "variant": "emphasis",
+      "label": "统一处理"
+    },
+    {
+      "id": "editable-curves",
+      "from": "image_algorithms",
+      "to": "path_document",
+      "variant": "emphasis",
+      "label": "拟合与编辑"
+    },
+    {
+      "id": "compile-plan",
+      "from": "path_document",
+      "to": "robot_client",
+      "variant": "emphasis",
+      "label": "采样编译"
+    },
+    {
+      "id": "tcp-commands",
+      "from": "robot_client",
+      "to": "rapid_queue",
+      "variant": "emphasis",
+      "label": "TCP 指令"
+    },
+    {
+      "id": "consume-queue",
+      "from": "rapid_queue",
+      "to": "rapid_motion",
+      "variant": "emphasis",
+      "label": "取队列执行"
+    },
+    {
+      "id": "pen-motion",
+      "from": "rapid_motion",
+      "to": "physical_drawing",
+      "variant": "emphasis",
+      "label": "落笔 / 抬笔"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "本地与 API 的边界",
+      "items": [
+        "浏览器和工作台由同一本地 Python 应用组织。",
+        "本地抠图与固定 WAV 提示不依赖实时 API 调用。",
+        "前端改图与 skill 共用本机 API 配置。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "可编辑的几何链路",
+      "items": [
+        "两种 skill 状态进入相同的二值化和路径流程。",
+        "异常拟合按原线分段重拟合；当前轮廓决定区域填充。",
+        "最终预览和 MOVEL 计划均来自当前路径文档。"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "ABB 执行与确认",
+      "items": [
+        "容量内边收边画；超容量按完整路径分批确认。",
+        "批尾 Stamp 与空闲状态共同确认执行完成。",
+        "前端拍照位请求经本地应用转发，等待实际到位后拍摄。"
+      ]
+    }
+  ],
+  "format": "xiaohua-diagram-v1",
+  "scenes": [
+    {
+      "id": "main",
+      "label": "图片到机器人绘画",
+      "edges": [
+        "local-request",
+        "confirmed-handoff",
+        "image-process",
+        "editable-curves",
+        "compile-plan",
+        "tcp-commands",
+        "consume-queue",
+        "pen-motion"
+      ]
+    },
+    {
+      "id": "api",
+      "label": "前端可选 API 改图",
+      "edges": [
+        "local-request",
+        "free-edit-call"
+      ]
+    },
+    {
+      "id": "skill",
+      "label": "工作台可选 skill",
+      "edges": [
+        "local-request",
+        "confirmed-handoff",
+        "skill-call"
+      ]
+    }
+  ]
+}

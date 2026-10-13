@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="小画画像机器人：系统架构、图片处理与路径规划、ABB 通信交互图。">
+  <title>Painting Robot · 交互框架图</title>
+  <style>
+    :root { color-scheme: light; --ink:#173b3a; --muted:#647875; --accent:#176e61; --line:#dce5df; --paper:#f5f7f2; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.7 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif; }
+    a { color:var(--accent); text-underline-offset:4px; }
+    a:focus-visible { outline:3px solid #dd9a42; outline-offset:5px; }
+    .wrap { width:min(1160px,calc(100% - 48px)); margin:auto; }
+    header { padding:30px 0; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); gap:20px; }
+    .brand { font-weight:750; letter-spacing:.05em; }
+    .repo { font-size:14px; }
+    .intro { padding:60px 0 32px; max-width:800px; }
+    .eyebrow { color:var(--accent); font-size:13px; letter-spacing:.16em; font-weight:650; }
+    h1 { font-size:clamp(30px,5vw,48px); line-height:1.25; margin:14px 0 20px; letter-spacing:-.035em; }
+    .intro p { color:var(--muted); margin:0; font-size:17px; }
+    .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; padding:12px 0 40px; }
+    article { background:white; border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
+    .preview { display:block; padding:22px; background:#edf2ec; border-bottom:1px solid var(--line); }
+    .preview img { display:block; width:100%; height:195px; object-fit:contain; }
+    .body { padding:24px; flex:1; display:flex; flex-direction:column; }
+    .number { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.12em; }
+    h2 { font-size:21px; margin:7px 0 12px; }
+    .body p { color:var(--muted); margin:0 0 24px; font-size:14px; }
+    .open { display:inline-flex; justify-content:space-between; align-items:center; gap:14px; margin-top:auto; background:var(--accent); color:white; text-decoration:none; padding:10px 14px; border-radius:8px; font-weight:600; }
+    .open:hover { background:#105447; }
+    .hint { padding:23px 26px; border-left:3px solid var(--accent); background:#eaf0e9; margin:0 0 50px; color:#415d55; font-size:14px; }
+    footer { border-top:1px solid var(--line); padding:24px 0 36px; display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; font-size:13px; color:var(--muted); }
+    @media (max-width:850px) { .cards { grid-template-columns:1fr; } .preview img { height:230px; } .intro { padding-top:38px; } }
+    @media (max-width:480px) { .wrap { width:calc(100% - 32px); } header { align-items:flex-start; } .repo { font-size:12px; } .body { padding:20px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="brand">小画 / PAINTING ROBOT</span>
+      <a class="repo" href="https://github.com/jadenbi/painting-robot">查看项目文档 ↗</a>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="eyebrow">INTERACTIVE DIAGRAMS</div>
+        <h1 id="page-title">从一张照片，到机器人落笔。</h1>
+        <p>通过三张交互图，了解小画画像机器人的系统组成、路径生成方法，以及与 ABB 的通信方式。</p>
+      </section>
+      <section class="cards" aria-label="选择交互图">
+        <article>
+          <a class="preview" href="diagrams/interactive/architecture.html" aria-label="打开系统架构交互图"><img src="images/architecture.svg" alt="系统架构图预览"></a>
+          <div class="body"><span class="number">01 / ARCHITECTURE</span><h2>系统架构</h2><p>浏览器前端、Python 工作台、API 与 ABB 如何连接，图片与指令如何在模块之间流转。</p><a class="open" href="diagrams/interactive/architecture.html">探索系统架构 <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <article>
+          <a class="preview" href="diagrams/interactive/workflow.html" aria-label="打开图片处理与路径规划交互图"><img src="images/workflow.svg" alt="图片处理与路径规划图预览"></a>
+          <div class="body"><span class="number">02 / WORKFLOW</span><h2>图片处理与路径规划</h2><p>从可选 skill 和二值化，到曲线拟合、区域填充与路径输出，逐步查看完整处理流程。</p><a class="open" href="diagrams/interactive/workflow.html">查看处理流程 <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <article>
+          <a class="preview" href="diagrams/interactive/communication.html" aria-label="打开 ABB 通信交互图"><img src="images/communication.svg" alt="ABB 通信图预览"></a>
+          <div class="body"><span class="number">03 / COMMUNICATION</span><h2>ABB 通信</h2><p>按配置的缓冲容量选择连续发送或分批确认，查看客户端、接收任务与运动任务的协作。</p><a class="open" href="diagrams/interactive/communication.html">查看通信过程 <span aria-hidden="true">↗</span></a></div>
+        </article>
+      </section>
+      <aside class="hint">进入图表后，可点击模块查看详情、切换演示分支、逐步播放、缩放和导出图片。图表仅用于说明系统逻辑，不会连接或控制机器人。</aside>
+    </main>
+    <footer><span>Painting Robot · 交互框架图</span><a href="mailto:124090004@cuhk.edu.cn">124090004@cuhk.edu.cn</a></footer>
+  </div>
+</body>
+</html>
