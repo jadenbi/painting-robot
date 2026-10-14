@@ -7,6 +7,10 @@
 
 ![系统架构](docs/images/architecture.svg)
 
+## 演示视频
+
+[观看或下载演示视频](https://media.githubusercontent.com/media/jadenbi/painting-robot/main/%E6%BC%94%E7%A4%BA%E8%A7%86%E9%A2%91.mp4)
+
 ## 方法与优化
 
 | 环节     | 采用的方法                               | 解决的问题与效果                             |
